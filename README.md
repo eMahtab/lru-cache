@@ -62,24 +62,15 @@ class LRUCache {
         addToFront(newNode);
         totalItemsInCache++;
         if (totalItemsInCache > maxCapacity) {
-          removeLRUEntry();
+          ListNode tailNode = tail.prev;
+          removeFromList(tailNode);
+          hashtable.remove(tailNode.key);
+          --totalItemsInCache;
         }
       } else {
         node.value = value;
         moveToHead(node);
       }
-    }
-    
-    private void removeLRUEntry() {
-      ListNode tail = popTail();
-      hashtable.remove(tail.key);
-      --totalItemsInCache;
-    }
-
-    private ListNode popTail() {
-      ListNode tailItem = tail.prev;
-      removeFromList(tailItem);
-      return tailItem;
     }
 }
 

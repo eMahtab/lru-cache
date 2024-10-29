@@ -6,18 +6,13 @@
 
 ```java
 class LRUCache {
-    
     Map<Integer, ListNode> hashtable = new HashMap<Integer, ListNode>();
-    ListNode head;
-    ListNode tail;
-    int totalItemsInCache;
-    int maxCapacity;
+    ListNode head, tail;
+    int totalItemsInCache, maxCapacity;
     
     private class ListNode {
-      int key;
-      int value;
-      ListNode prev;
-      ListNode next;
+      int key, value;
+      ListNode next, prev;
     }
 
     public LRUCache(int capacity) {
@@ -33,7 +28,6 @@ class LRUCache {
       ListNode node = hashtable.get(key);
       if (node == null) 
          return -1;
-
       moveToHead(node);
       return node.value;  
     }
@@ -44,11 +38,10 @@ class LRUCache {
     }
     
     private void removeFromList(ListNode node) {
-      ListNode savedPrev = node.prev;
-      ListNode savedNext = node.next;
-
-      savedPrev.next = savedNext;
-      savedNext.prev = savedPrev;
+      ListNode prevNode = node.prev;
+      ListNode nextNode = node.next;
+      prevNode.next = nextNode;
+      nextNode.prev = prevNode;
     }
     
     private void addToFront(ListNode node) {
@@ -61,16 +54,13 @@ class LRUCache {
     
     public void put(int key, int value) {
       ListNode node = hashtable.get(key);
-
       if (node == null) {
         ListNode newNode = new ListNode();
         newNode.key = key;
         newNode.value = value;
-          
         hashtable.put(key, newNode);
         addToFront(newNode);
         totalItemsInCache++;
-
         if (totalItemsInCache > maxCapacity) {
           removeLRUEntry();
         }
@@ -82,7 +72,6 @@ class LRUCache {
     
     private void removeLRUEntry() {
       ListNode tail = popTail();
-
       hashtable.remove(tail.key);
       --totalItemsInCache;
     }
@@ -90,7 +79,6 @@ class LRUCache {
     private ListNode popTail() {
       ListNode tailItem = tail.prev;
       removeFromList(tailItem);
-
       return tailItem;
     }
 }
